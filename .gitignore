@@ -1,0 +1,56 @@
+# Node.js / npm
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.pnpm-debug.log
+
+# Build output
+/dist
+/build
+/out
+/coverage
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.staging
+.env.production
+
+# Logs
+logs
+*.log
+logs/*.log
+
+# Database
+mongo-data/
+redis-data/
+
+# IDE & Editor files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Local development
+.dockerignore
+*.tmp
+tmp/
+temp/
+
+# OS generated files
+Thumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk

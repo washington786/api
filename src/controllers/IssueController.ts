@@ -1,14 +1,5 @@
-import { Router } from "express";
-
-const issueRouter = Router();
-
-issueRouter.get('/:id', () => { })
-issueRouter.get('/', () => { })
-
-issueRouter.post('/', () => { })
-
-
-issueRouter.put("/:id", () => { })
-issueRouter.delete("/:id", () => { })
-
-export default issueRouter;
+export const getIssueById = () => { };
+export const getIssues = () => { };
+export const removeIssue = () => { };
+export const updateIssue = () => { };
+export const createIssue = () => { };

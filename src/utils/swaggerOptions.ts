@@ -41,7 +41,25 @@ const options: Options = {
                     createdAt: { type: 'string', format: 'date-time' },
                     updatedAt: { type: 'string', format: 'date-time' }
                 }
-            }
+            },
+            User: {
+                type: 'object',
+                properties: {
+                    _id: { type: 'string' },
+                    name: { type: 'string' },
+                    email: { type: 'string', format: 'email' },
+                    role: { type: 'string', enum: ['user', 'admin'] },
+                    createdAt: { type: 'string', format: 'date-time' },
+                    updatedAt: { type: 'string', format: 'date-time' }
+                }
+            },
+            AuthResponse: {
+                type: 'object',
+                properties: {
+                    token: { type: 'string', description: 'JWT token' },
+                    user: { $ref: '#/components/schemas/User' }
+                }
+            },
         },
         security: [],
     },

@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "docs": "echo 'Swagger available at /api-docs'"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +31,7 @@
   "devDependencies": {
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/swagger-jsdoc": "^6.0.4",
     "typescript": "^5.9.2"
   }
 }

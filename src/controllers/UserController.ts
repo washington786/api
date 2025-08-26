@@ -170,7 +170,7 @@ export const login = async (req: Request, res: Response) => {
  *       401:
  *         description: Unauthorized
  */
-export const getMe = async (req: Request, res: Response) => {
+export const GetMyProfile = async (req: Request, res: Response) => {
     try {
         const user = await Users.findById(req.user?.userId).select('-password');
         if (!user) {

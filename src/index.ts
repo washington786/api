@@ -1,7 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { connectDB } from './configs/db.js';
-import { connectRedis } from './configs/redis.js';
 
 import issueRouter from './routes/IssueRoute.js';
 import userRouter from './routes/UserRoute.js';
@@ -10,6 +9,7 @@ import healthRoute from './routes/apiHealthRoute.js';
 import { apiLimiter } from './middlewares/rateLimit.js';
 
 import logger from './utils/logger.js';
+import { connectRedis } from './configs/redis.js';
 
 dotenv.config();
 

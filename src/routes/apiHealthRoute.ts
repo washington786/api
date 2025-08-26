@@ -1,5 +1,4 @@
 import { Router } from "express";
-
 const healthRoute = Router();
 
 /**
@@ -21,9 +20,14 @@ const healthRoute = Router();
  *                 status:
  *                   type: string
  *                   example: OK
+ *                 timestamp:
+ *                   type: string
+ *                   format: date-time
+ *                   example: 2025-04-05T10:00:00Z
  */
+
 healthRoute.get('/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
-})
+});
 
 export default healthRoute;

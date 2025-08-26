@@ -15,6 +15,10 @@ const options: Options = {
             },
         ],
         components: {
+            apis: [
+                './src/routes/*.ts',
+                './src/controllers/*.ts',
+            ],
             securitySchemes: {
                 BearerAuth: {
                     type: 'http',

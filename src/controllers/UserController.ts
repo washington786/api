@@ -1,8 +1,7 @@
-import type { Request, Response } from 'express';
-import bcrypt from 'bcryptjs';
+import type { Request, Response } from "express";
+import Users from "../models/Users.js";
+import logger from "../utils/logger.js";
 import jwt from 'jsonwebtoken';
-import logger from '../utils/logger.js';
-import Users from '../models/Users.js';
 
 /**
  * @openapi
@@ -27,6 +26,33 @@ import Users from '../models/Users.js';
  *           format: password
  *           example: mysecretpassword
  *           writeOnly: true
+ *     AuthResponse:
+ *       type: object
+ *       properties:
+ *         token:
+ *           type: string
+ *           description: JWT token
+ *         user:
+ *           $ref: '#/components/schemas/User'
+ *     User:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         email:
+ *           type: string
+ *           format: email
+ *         role:
+ *           type: string
+ *           enum: [user, admin]
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
  */
 
 /**
@@ -45,7 +71,7 @@ import Users from '../models/Users.js';
  *             $ref: '#/components/schemas/UserInput'
  *     responses:
  *       201:
- *         description: Users created successfully
+ *         description: User created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -59,15 +85,12 @@ export const register = async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
 
     try {
-        const existingUser = await Users.findOne({ email });
+        const existingUser = await Users.findOne({ email }).exec();
         if (existingUser) {
-            return res.status(400).json({ msg: 'Users already exists' });
+            return res.status(400).json({ msg: 'User already exists' });
         }
 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
-        const user = new Users({ name, email, password: hashedPassword });
+        const user = new Users({ name, email, password });
         await user.save();
 
         const token = jwt.sign(
@@ -77,7 +100,15 @@ export const register = async (req: Request, res: Response) => {
         );
 
         logger.info(`User registered: ${user.email}`);
-        res.status(201).json({ token, user: { _id: user._id, name, email, role: user.role } });
+        res.status(201).json({
+            token,
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+            },
+        });
     } catch (err: any) {
         logger.error('Error during registration:', err);
         res.status(500).json({ msg: 'Server error' });
@@ -126,12 +157,12 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     try {
-        const user = await Users.findOne({ email });
+        const user = await Users.findOne({ email }).select('+password').exec();
         if (!user) {
             return res.status(400).json({ msg: 'Invalid credentials' });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             return res.status(400).json({ msg: 'Invalid credentials' });
         }
@@ -142,8 +173,16 @@ export const login = async (req: Request, res: Response) => {
             { expiresIn: '7d' }
         );
 
-        logger.info(`Users logged in: ${user.email}`);
-        res.json({ token, user: { _id: user._id, name: user.name, email: user.email, role: user.role } });
+        logger.info(`User logged in: ${user.email}`);
+        res.json({
+            token,
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+            },
+        });
     } catch (err: any) {
         logger.error('Error during login:', err);
         res.status(500).json({ msg: 'Server error' });
@@ -162,19 +201,21 @@ export const login = async (req: Request, res: Response) => {
  *       - BearerAuth: []
  *     responses:
  *       200:
- *         description: Users profile
+ *         description: User profile
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Users'
+ *               $ref: '#/components/schemas/User'
  *       401:
  *         description: Unauthorized
+ *       404:
+ *         description: User not found
  */
-export const GetMyProfile = async (req: Request, res: Response) => {
+export const getMyProfile = async (req: Request, res: Response) => {
     try {
-        const user = await Users.findById(req.user?.userId).select('-password');
+        const user = await Users.findById(req.user?.userId).select('-password').exec();
         if (!user) {
-            return res.status(404).json({ msg: 'Users not found' });
+            return res.status(404).json({ msg: 'User not found' });
         }
         res.json(user);
     } catch (err: any) {
@@ -201,7 +242,7 @@ export const GetMyProfile = async (req: Request, res: Response) => {
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Users'
+ *                 $ref: '#/components/schemas/User'
  *       403:
  *         description: Admin access required
  *       401:
@@ -213,7 +254,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
             return res.status(403).json({ msg: 'Admin access required' });
         }
 
-        const users = await Users.find().select('-password');
+        const users = await Users.find().select('-password').exec();
         res.json(users);
     } catch (err: any) {
         logger.error('Error fetching users:', err);
@@ -237,10 +278,10 @@ export const getAllUsers = async (req: Request, res: Response) => {
  *         required: true
  *         schema:
  *           type: string
- *         description: Users ID
+ *         description: User ID
  *     responses:
  *       200:
- *         description: Users deleted successfully
+ *         description: User deleted successfully
  *         content:
  *           application/json:
  *             schema:
@@ -248,11 +289,11 @@ export const getAllUsers = async (req: Request, res: Response) => {
  *               properties:
  *                 msg:
  *                   type: string
- *                   example: Users deleted
+ *                   example: User deleted
  *       403:
  *         description: Admin access required
  *       404:
- *         description: Users not found
+ *         description: User not found
  *       401:
  *         description: Unauthorized
  */
@@ -263,14 +304,14 @@ export const deleteUser = async (req: Request, res: Response) => {
         }
 
         const { id } = req.params;
-        const user = await Users.findById(id);
+        const user = await Users.findById(id).exec();
         if (!user) {
-            return res.status(404).json({ msg: 'Users not found' });
+            return res.status(404).json({ msg: 'User not found' });
         }
 
         await user.deleteOne();
-        logger.info(`Users deleted: ${user.email}`);
-        res.json({ msg: 'Users deleted' });
+        logger.info(`User deleted: ${user.email}`);
+        res.json({ msg: 'User deleted' });
     } catch (err: any) {
         logger.error('Error deleting user:', err);
         res.status(500).json({ msg: 'Server error' });

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteUser, getAllUsers, GetMyProfile, login, register } from "../controllers/UserController.js";
+import { deleteUser, getAllUsers, getMyProfile, login, register } from "../controllers/UserController.js";
 import { authenticate, authorizeAdmin } from "../middlewares/Auth.js";
 
 /**
@@ -23,8 +23,8 @@ userRouter.post('/password-reset', () => { })
  */
 // authenticated routes
 userRouter.use(authenticate);
-userRouter.get('/profile', GetMyProfile)
-userRouter.get('/users', getAllUsers)
-userRouter.put("/profile-update", authorizeAdmin, deleteUser)
+userRouter.get('/profile', getMyProfile);
+userRouter.get('/users', getAllUsers);
+userRouter.put("/profile-update", authorizeAdmin, deleteUser);
 
 export default userRouter;

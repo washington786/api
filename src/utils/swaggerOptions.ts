@@ -69,4 +69,4 @@ const options: Options = {
     ],
 };
 
-export default options;
+export default { SwaggerOptions: options };

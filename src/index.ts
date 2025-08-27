@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import cors from "cors"
 import { connectDB } from './configs/db.js';
 
 import issueRouter from './routes/IssueRoute.js';
@@ -14,6 +15,14 @@ import { startEmailWorker } from './utils/emailWorker.js';
 import swagger from './middlewares/Swagger.js';
 
 const app = express();
+
+app.use(cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
+
 
 app.use('/', swagger);
 

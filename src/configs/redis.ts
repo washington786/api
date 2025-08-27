@@ -2,7 +2,7 @@ import * as IORedis from "ioredis";
 
 const Redis = IORedis.default as unknown as new (...args: any[]) => any;
 
-const redisUrl = `redis://${process.env.REDIS_USERNAME || 'default'}:${process.env.REDIS_PASSWORD || 'rwMBSb6OADaB4zM5MmUfMXj9mS0BRqHy'}@${process.env.REDIS_URL || 'redis-16879.c341.af-south-1-1.ec2.redns.redis-cloud.com'}:${process.env.REDIS_PORT || '16879'}`;
+const redisUrl = `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_URL}:${process.env.REDIS_PORT}`;
 
 export const redisClient = new Redis(redisUrl, {
     enableReadyCheck: false,

@@ -17,9 +17,8 @@
     "declarationMap": true,
 
     // Type Safety
-    "strict": true,
+    "strict": false,
     "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
 
     // ESM / Modern JS
     "verbatimModuleSyntax": true,

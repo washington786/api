@@ -21,7 +21,7 @@ app.use(express.json());
 app.use('/api', apiLimiter);
 
 app.use('/api/health', healthRoute);
-app.use('/api/auth', userRouter);
+app.use('/api/users', userRouter);
 app.use('/api/issues', issueRouter);
 
 const PORT = process.env.PORT || 5000;

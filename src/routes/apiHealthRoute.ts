@@ -26,7 +26,7 @@ const healthRoute = Router();
  *                   example: 2025-04-05T10:00:00Z
  */
 
-healthRoute.get('/health', (req, res) => {
+healthRoute.get('/', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 

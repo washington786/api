@@ -24,7 +24,7 @@ userRouter.post('/password-reset', () => { })
 // authenticated routes
 userRouter.use(authenticate);
 userRouter.get('/profile', getMyProfile);
-userRouter.get('/users', getAllUsers);
-userRouter.put("/profile-update", authorizeAdmin, deleteUser);
+userRouter.get('/list', getAllUsers);
+userRouter.delete("/profile-delete", authorizeAdmin, deleteUser);
 
 export default userRouter;

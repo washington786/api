@@ -191,7 +191,7 @@ export const login = async (req: Request, res: Response) => {
 
 /**
  * @openapi
- * /users/me:
+ * /users/profile:
  *   get:
  *     summary: Get current user profile
  *     description: Returns the authenticated user's info (name, email, role).
@@ -226,7 +226,7 @@ export const getMyProfile = async (req: Request, res: Response) => {
 
 /**
  * @openapi
- * /users:
+ * /users/list:
  *   get:
  *     summary: Get all users (admin only)
  *     description: Only admins can view all users.

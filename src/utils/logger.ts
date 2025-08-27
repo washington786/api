@@ -1,22 +1,38 @@
 import winston from 'winston';
 
-const isProduction = process.env.NODE_ENV === 'production';
+const transports = [];
+
+transports.push(new winston.transports.Console({
+    format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+    )
+}));
+
+try {
+    transports.push(new winston.transports.File({
+        filename: 'logs/error.log',
+        level: 'error',
+        maxsize: 5242880, // 5MB
+        maxFiles: 5,
+    }));
+
+    transports.push(new winston.transports.File({
+        filename: 'logs/combined.log',
+        maxsize: 5242880, // 5MB
+        maxFiles: 5,
+    }));
+} catch (error) {
+    console.warn('File logging disabled due to permission issues:', error.message);
+}
 
 const logger = winston.createLogger({
     level: 'info',
-    format: winston.format.json(),
-    transports: [
-        // Always log to console
-        new winston.transports.Console(),
-
-        // Only log to file in development
-        ...(!isProduction
-            ? [
-                new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-                new winston.transports.File({ filename: 'logs/combined.log' }),
-            ]
-            : []),
-    ],
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json()
+    ),
+    transports,
 });
 
 export default logger;

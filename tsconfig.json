@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+
     // Module Resolution
     "module": "nodenext",
     "moduleResolution": "nodenext",
@@ -28,7 +29,7 @@
 
     // Interop (safe with verbatimModuleSyntax)
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
 
     // JSX
     "jsx": "react-jsx",

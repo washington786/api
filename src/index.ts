@@ -1,5 +1,5 @@
+import 'dotenv/config';
 import express from 'express';
-import dotenv from 'dotenv';
 import { connectDB } from './configs/db.js';
 
 import issueRouter from './routes/IssueRoute.js';
@@ -10,9 +10,10 @@ import { apiLimiter } from './middlewares/rateLimit.js';
 
 import logger from './utils/logger.js';
 import { connectRedis } from './configs/redis.js';
+import { startEmailWorker } from './utils/emailWorker.js';
 
-dotenv.config();
 
+console.log(process.env.NODE_ENV);
 const app = express();
 app.use(express.json());
 app.use('/api', apiLimiter);
@@ -26,6 +27,7 @@ const PORT = process.env.PORT || 5000;
 const start = async () => {
     await connectDB();
     await connectRedis();
+    await startEmailWorker();
     app.listen(PORT, () => {
         logger.info(`Server running on port ${PORT}`);
     });

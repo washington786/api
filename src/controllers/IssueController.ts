@@ -1,13 +1,11 @@
 import type { Request, Response } from 'express';
-import { Queue } from 'bullmq';
 import Issue from '../models/Issue.js';
 import logger from '../utils/logger.js';
 
-import * as Redis from 'ioredis';
+import { Queue } from 'bullmq';
+import { redisClient } from '../configs/redis.js';
 
-const connection = new (Redis as any)(process.env.REDIS_URL || 'redis://redis:6379');
-
-const emailQueue = new Queue('email', { connection });
+const emailQueue = new Queue('email', { connection: redisClient });
 
 /**
  * @openapi

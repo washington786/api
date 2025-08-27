@@ -1,56 +1,26 @@
-import { createClient } from 'redis';
-import type { RedisClientType } from 'redis';
+import * as IORedis from "ioredis";
 
-let client: RedisClientType;
+const Redis = IORedis.default;
 
-// Environment variables (ensure they're set)
-const REDIS_URL = process.env.REDIS_URL;
-const REDIS_PORT = process.env.REDIS_PORT || '16879';
-const REDIS_USERNAME = process.env.REDIS_USERNAME;
-const REDIS_PASSWORD = process.env.REDIS_PASSWORD;
+const redisUrl = `redis://${process.env.REDIS_USERNAME || 'default'}:${process.env.REDIS_PASSWORD || 'rwMBSb6OADaB4zM5MmUfMXj9mS0BRqHy'}@${process.env.REDIS_URL || 'redis-16879.c341.af-south-1-1.ec2.redns.redis-cloud.com'}:${process.env.REDIS_PORT || '16879'}`;
 
-export async function connectRedis() {
-    if (!REDIS_URL || !REDIS_USERNAME || !REDIS_PASSWORD) {
-        console.error('Missing Redis credentials in .env');
-        process.exit(1);
+export const redisClient = new Redis(redisUrl, {
+    enableReadyCheck: false,
+    retryStrategy: (times: number) => {
+        const delay = Math.min(times * 50, 2000);
+        return delay;
     }
+});
 
-    try {
-        client = createClient({
-            username: REDIS_USERNAME,
-            password: REDIS_PASSWORD,
-            socket: {
-                host: REDIS_URL,
-                port: parseInt(REDIS_PORT),
-                tls: true,
-            },
-        });
+redisClient.on("connect", () => {
+    console.log("Redis connected:", redisUrl);
+});
 
-        // Handle connection errors
-        client.on('error', (err) => {
-            console.error('Redis Client Error:', err);
-        });
+redisClient.on("error", (err: any) => {
+    console.error("Redis connection error:", err);
+});
 
-        // Log connection success
-        client.on('connect', () => {
-            console.log('Redis client connecting...');
-        });
-
-        client.on('ready', () => {
-            console.log('Redis client connected and ready');
-        });
-
-        // Connect to Redis
-        await client.connect();
-
-        // Optional: Test connection
-        await client.set('ping', 'pong');
-        const response = await client.get('ping');
-        console.log(`Redis test: ${response}`); // Should log: pong
-    } catch (err) {
-        console.error('Failed to connect to Redis:', err);
-        process.exit(1);
-    }
-}
-
-export { client as redisClient };
+export const connectRedis = async (): Promise<void> => {
+    await redisClient.ping();
+    console.log("Redis ping successful");
+};

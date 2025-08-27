@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
     "build": "tsc",
-    "start": "node dist/server.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "docs": "echo 'Swagger available at /api-docs'"
   },
   "keywords": [],
@@ -17,7 +17,6 @@
     "bcryptjs": "^3.0.2",
     "bullmq": "^5.58.1",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "express-rate-limit": "^8.0.1",
     "ioredis": "^5.7.0",
@@ -30,10 +29,13 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
+    "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "dotenv": "^17.2.1",
+    "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }
 }

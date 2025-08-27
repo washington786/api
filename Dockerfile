@@ -8,21 +8,19 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Build the app
+# Copy source code
 COPY . .
+
+# Build TypeScript
 RUN npm run build
 
-# 👇 Create logs directory and set ownership
-RUN mkdir -p /app/logs && chown nextjs:nodejs /app/logs
-
-# Create non-root user
+# Create non-root user (security best practice)
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
-# 👇 Copy only runtime files (logs dir already exists)
+# Ensure correct permissions
 COPY --chown=nextjs:nodejs . .
 
-# Switch to non-root user
 USER nextjs
 
 # Expose port

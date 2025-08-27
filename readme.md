@@ -2,16 +2,16 @@
 
 A secure, full-featured backend for an issue tracking system built with **Node.js + Express + TypeScript**.
 
-## 🚀 Features
+## Features
 
-- 🔐 JWT Authentication & Role-Based Access (User/Admin)
-- 📦 RESTful API with Swagger Documentation
-- 🧵 Background Jobs (Email Notifications via BullMQ + Redis)
-- 📧 Transactional Emails (Resend)
-- 📈 Rate Limiting & Logging
-- 🐳 Docker Ready
+- JWT Authentication & Role-Based Access (User/Admin)
+- RESTful API with Swagger Documentation
+- Background Jobs (Email Notifications via BullMQ + Redis)
+- Transactional Emails (Resend)
+- Rate Limiting & Logging
+- Docker Ready
 
-## 📦 Tech Stack
+## Tech Stack
 
 - **Runtime**: Node.js
 - **Framework**: Express
@@ -23,18 +23,18 @@ A secure, full-featured backend for an issue tracking system built with **Node.j
 - **Docs**: Swagger UI (OpenAPI)
 - **Hosting**: Render / Docker
 
-## 🧰 Prerequisites
+## rerequisites
 
 - [Node.js](https://nodejs.org) (v18+)
 - [MongoDB Atlas Account](https://www.mongodb.com/cloud/atlas) (free tier)
 - [Upstash Redis](https://upstash.com) or [Redis Cloud](https://redis.com/try-free/) (free tier)
 - [Resend Account](https://resend.com) (free 3,000 emails/month)
 
-## 🛠️ Setup & Installation
+## Setup & Installation
 
 ```bash
-git clone https://github.com/your-username/issue-tracker.git
-cd issue-tracker/backend
+git clone https://github.com/washington786/api.git
+cd api/backend
 npm install
 
 ### ENVIRONMENT VARIABLES

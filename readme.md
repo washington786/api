@@ -49,6 +49,13 @@ REDIS_PASSWORD=your_long_password_here
 RESEND_API_KEY=re_XXXXXXXXXXXXXXXX
 API_BASE_PATH=/api
 
+## Security
+Passwords hashed with bcrypt
+JWT with 7-day expiry
+Rate limiting on auth routes
+Input validation
+Environment variables for secrets
+
 ### DEVELOPMENT
 npm run dev
 

@@ -11,7 +11,7 @@ const emailQueue = new Queue('email', { connection: redisClient });
  * @openapi
  * /issues:
  *   get:
- *     summary: Get all issues (user: own issues, admin: all issues)
+ *     summary: 'Get all issues (user: own issues, admin: all issues)'
  *     description: Returns a list of issues. Regular users only see their own. Admins see all.
  *     tags:
  *       - Issues
@@ -49,7 +49,7 @@ export const getIssues = async (req: Request, res: Response) => {
  * @openapi
  * /issues/{id}:
  *   get:
- *     summary: Get a single issue by ID
+ *     summary: 'Get a single issue by ID'
  *     description: Users can view their own issue. Admins can view any issue.
  *     tags:
  *       - Issues
@@ -102,7 +102,7 @@ export const getIssueById = async (req: Request, res: Response) => {
  * @openapi
  * /issues/{id}:
  *   put:
- *     summary: Update an issue (only admin or owner can update)
+ *     summary: 'Update an issue (only admin or owner can update)'
  *     description: Users can update their own issue. Admins can update any issue.
  *     tags:
  *       - Issues
@@ -177,7 +177,7 @@ export const updateIssue = async (req: Request, res: Response) => {
  * @openapi
  * /issues/{id}:
  *   delete:
- *     summary: Delete an issue (admin only)
+ *     summary: 'Delete an issue (admin only)'
  *     description: Only admins can delete issues.
  *     tags:
  *       - Issues
@@ -235,7 +235,7 @@ export const removeIssue = async (req: Request, res: Response) => {
  * @openapi
  * /issues:
  *   post:
- *     summary: Create a new issue
+ *     summary: 'Create a new issue'
  *     description: Only authenticated users can create issues. Triggers email to admin.
  *     requestBody:
  *       required: true

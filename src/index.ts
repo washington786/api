@@ -11,10 +11,12 @@ import { apiLimiter } from './middlewares/rateLimit.js';
 import logger from './utils/logger.js';
 import { connectRedis } from './configs/redis.js';
 import { startEmailWorker } from './utils/emailWorker.js';
+import swagger from './middlewares/Swagger.js';
 
-
-console.log(process.env.NODE_ENV);
 const app = express();
+
+app.use('/', swagger);
+
 app.use(express.json());
 app.use('/api', apiLimiter);
 

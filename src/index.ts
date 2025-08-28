@@ -17,13 +17,24 @@ import swagger from './middlewares/Swagger.js';
 const app = express();
 
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173' || "https://api-qve5.onrender.com",
+    origin: (origin, callback) => {
+        const allowed = [
+            'http://localhost:5173',
+            process.env.FRONTEND_URL,
+        ];
+
+        if (!origin || allowed.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 }));
 
-
+// swaggger
 app.use('/', swagger);
 
 app.use(express.json());

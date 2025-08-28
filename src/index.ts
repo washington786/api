@@ -19,7 +19,7 @@ const app = express();
 app.use(cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:5173' || "https://api-qve5.onrender.com",
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
